@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#102542" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="英语阅读雷达" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <title>英语阅读雷达</title>
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="icon" href="./icons/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="./icons/apple-touch-icon.svg" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="hero-panel">
+        <p class="eyebrow">English Reading / Live Feed</p>
+        <h1>英语阅读雷达</h1>
+        <p class="subtitle">
+          自动抓取 5-10 篇适合六级或考研英语训练的最新文章，按直连板块和跳转板块展示，并提炼 1-2 句长难句与参考译文。
+        </p>
+
+        <div class="hero-illustration" aria-hidden="true">
+          <svg viewBox="0 0 260 180" role="img">
+            <rect x="18" y="30" width="224" height="126" rx="24" class="ill-card" />
+            <circle cx="84" cy="76" r="22" class="ill-face" />
+            <path d="M61 130c8-22 19-33 34-33s27 11 34 33" class="ill-shirt" />
+            <rect x="118" y="64" width="72" height="52" rx="10" class="ill-book" />
+            <path d="M154 64v52" class="ill-book-line" />
+            <path d="M186 48c9 0 16 7 16 16s-7 16-16 16" class="ill-lamp" />
+            <path d="M194 32v16" class="ill-lamp-line" />
+            <circle cx="205" cy="28" r="8" class="ill-light" />
+            <path d="M48 52c8-8 16-12 25-12" class="ill-doodle" />
+            <path d="M202 132c10-6 20-8 30-6" class="ill-doodle" />
+          </svg>
+        </div>
+
+        <div class="hero-metrics">
+          <article class="metric-card">
+            <span class="metric-label">当前文章</span>
+            <strong id="article-count">0</strong>
+          </article>
+          <article class="metric-card">
+            <span class="metric-label">命中来源</span>
+            <strong id="source-count">0</strong>
+          </article>
+          <article class="metric-card">
+            <span class="metric-label">更新频率</span>
+            <strong>10 分钟</strong>
+          </article>
+        </div>
+
+        <div class="tag-cloud">
+          <span>CET-6</span>
+          <span>考研英语</span>
+          <span>直连板块</span>
+          <span>长难句翻译</span>
+        </div>
+
+        <div class="study-guide">
+          <p class="guide-title">精读图例</p>
+          <p><span class="underline-demo">下划线句段</span> 代表适合拆解的长难句结构。</p>
+          <p>每篇文章保留 1-2 句重点长难句，并提供中文参考译文。</p>
+          <p>阅读时可先看直连板块，再跳到国际外刊扩展题材。</p>
+        </div>
+
+        <div class="source-priority">
+          <p class="guide-title">直连优先来源</p>
+          <div class="priority-pills">
+            <span>China Daily</span>
+            <span>CGTN</span>
+            <span>Global Times</span>
+            <span>Beijing Review</span>
+            <span>ECNS</span>
+          </div>
+          <p class="priority-note">这些站点会被优先展示在前面，再补充 Guardian、TIME、Newsweek 等国际外刊。</p>
+        </div>
+      </section>
+
+      <section class="feed-panel">
+        <div class="toolbar">
+          <div>
+            <p class="toolbar-label">实时状态</p>
+            <h2 id="feed-status">正在连接新闻源...</h2>
+          </div>
+          <div class="toolbar-actions">
+            <button id="refresh-btn" class="secondary-btn" type="button">立即刷新</button>
+            <button id="install-btn" class="primary-btn hidden" type="button">安装到手机</button>
+          </div>
+        </div>
+
+        <div class="status-strip">
+          <span id="last-updated">尚未更新</span>
+          <span id="refresh-hint">自动刷新中</span>
+        </div>
+
+        <div class="filter-bar" aria-label="文章筛选">
+          <button id="filter-all" class="filter-chip is-active" type="button">全部文章</button>
+          <button id="filter-direct" class="filter-chip" type="button">直连板块</button>
+          <button id="filter-jump" class="filter-chip" type="button">跳转板块</button>
+        </div>
+
+        <section class="notes-panel">
+          <p>
+            说明：页面会根据标题、摘要、题材与长度做一层筛选，尽量避开娱乐化和过短内容；长难句与参考译文基于抓取到的标题和摘要生成，不会改写原站全文。直连板块优先排序，跳转板块主要补充国际外刊。
+          </p>
+        </section>
+
+        <section class="article-section">
+          <div id="article-list" class="article-list" aria-live="polite"></div>
+          <div id="empty-state" class="empty-state hidden">
+            <h3>暂时没有可展示的文章</h3>
+            <p>请稍后刷新，或等待下一轮自动抓取。</p>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>

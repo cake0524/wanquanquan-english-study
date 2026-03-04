@@ -1,0 +1,26 @@
+{
+  "name": "英语阅读雷达",
+  "short_name": "阅读雷达",
+  "description": "自动更新适合六级与考研英语训练的英文文章聚合页。",
+  "lang": "zh-CN",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#edf3f7",
+  "theme_color": "#102542",
+  "icons": [
+    {
+      "src": "./icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/maskable-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}

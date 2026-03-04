@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+  <style name="Theme.ReadingRadar" parent="Theme.Material3.DayNight.NoActionBar">
+    <item name="android:statusBarColor">@color/snake_ink</item>
+    <item name="android:navigationBarColor">@color/snake_ink</item>
+    <item name="android:windowLightStatusBar">false</item>
+    <item name="android:windowLightNavigationBar">false</item>
+    <item name="colorPrimary">@color/snake_ink</item>
+    <item name="colorSurface">@color/snake_surface</item>
+    <item name="android:windowBackground">@color/snake_background</item>
+    <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
+  </style>
+</resources>

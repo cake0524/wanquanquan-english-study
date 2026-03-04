@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <color name="snake_background">#FFFDF0</color>
+  <color name="snake_surface">#FFFFFF</color>
+  <color name="snake_ink">#213547</color>
+  <color name="snake_green">#FFDE59</color>
+</resources>
