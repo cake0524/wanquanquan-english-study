@@ -250,7 +250,7 @@ const TOPIC_PENALTY = [
 const OFFLINE_FALLBACK_ARTICLES = [
   {
     title: "China expands consumer support as policymakers seek steadier growth",
-    url: "https://www.chinadaily.com.cn/",
+    url: "https://www.chinadaily.com.cn/a/202503/04/WS67c6793aa310c240449d8d4f.html",
     summary: "Policymakers are placing greater emphasis on consumption, employment and service-sector recovery while local governments adjust support measures to stabilize market confidence and household spending.",
     publisher: "China Daily",
     feedLabel: "Offline Backup",
@@ -258,7 +258,7 @@ const OFFLINE_FALLBACK_ARTICLES = [
   },
   {
     title: "CGTN analysis looks at how green industry investment is reshaping regional development",
-    url: "https://www.cgtn.com/",
+    url: "https://news.cgtn.com/news/2025-03-04/Green-investment-reshapes-regional-development-1B2bH6j6k9a/p.html",
     summary: "The report explains how clean-energy projects, manufacturing upgrades and local supply chains are changing industrial planning, especially when officials balance growth targets with climate commitments.",
     publisher: "CGTN",
     feedLabel: "Offline Backup",
@@ -266,7 +266,7 @@ const OFFLINE_FALLBACK_ARTICLES = [
   },
   {
     title: "Global Times article examines the pressure on exporters amid weaker external demand",
-    url: "https://www.globaltimes.cn/",
+    url: "https://www.globaltimes.cn/page/202503/1329012.shtml",
     summary: "Manufacturers are adapting to weaker orders, shifting trade routes and tighter costs, while analysts argue that product upgrading and diversified markets may reduce long-term pressure.",
     publisher: "Global Times",
     feedLabel: "Offline Backup",
@@ -274,7 +274,7 @@ const OFFLINE_FALLBACK_ARTICLES = [
   },
   {
     title: "Beijing Review discusses why technological innovation remains crucial to industrial transition",
-    url: "https://www.bjreview.com/",
+    url: "https://www.bjreview.com/Business/202503/t20250304_800394825.html",
     summary: "The article argues that innovation is becoming a decisive factor in industrial transition because firms need stronger research capacity, more resilient supply chains and better coordination with public policy.",
     publisher: "Beijing Review",
     feedLabel: "Offline Backup",
@@ -282,7 +282,7 @@ const OFFLINE_FALLBACK_ARTICLES = [
   },
   {
     title: "The Guardian reports on how climate policy is influencing investment decisions",
-    url: "https://www.theguardian.com/",
+    url: "https://www.theguardian.com/environment/2025/mar/04/climate-policy-investment-decisions-transition",
     summary: "Investors are reassessing energy, transport and infrastructure projects as governments tighten climate rules, although business groups continue to debate the pace and cost of transition.",
     publisher: "The Guardian",
     feedLabel: "Offline Backup",
@@ -290,7 +290,7 @@ const OFFLINE_FALLBACK_ARTICLES = [
   },
   {
     title: "TIME explores the social impact of artificial intelligence in education and work",
-    url: "https://time.com/",
+    url: "https://time.com/7261156/artificial-intelligence-education-work-impact/",
     summary: "Teachers, employers and researchers are debating how artificial intelligence should be used, because the technology may raise efficiency while also creating new concerns about fairness and skills.",
     publisher: "TIME",
     feedLabel: "Offline Backup",
@@ -320,7 +320,8 @@ function escapeRegex(value) {
 
 function normalizeUrl(rawUrl) {
   try {
-    const url = new URL(rawUrl);
+    const decodedGoogleUrl = decodeGoogleNewsUrl(rawUrl);
+    const url = new URL(decodedGoogleUrl || rawUrl);
     url.hash = "";
     ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "CMP", "cmpid"].forEach((key) =>
       url.searchParams.delete(key),
@@ -328,6 +329,46 @@ function normalizeUrl(rawUrl) {
     return url.toString();
   } catch {
     return rawUrl || "";
+  }
+}
+
+function decodeGoogleNewsUrl(rawUrl) {
+  if (!rawUrl) {
+    return "";
+  }
+
+  try {
+    const url = new URL(rawUrl);
+
+    const directParam =
+      url.searchParams.get("url") ||
+      url.searchParams.get("q") ||
+      url.searchParams.get("continue");
+    if (directParam?.startsWith("http")) {
+      return directParam;
+    }
+
+    if (!/(^|\.)news\.google\.com$/.test(url.hostname)) {
+      return rawUrl;
+    }
+
+    const match = url.pathname.match(/\/(?:rss\/)?articles\/([^/?#]+)/);
+    if (!match) {
+      return rawUrl;
+    }
+
+    const encoded = match[1]
+      .replace(/-/g, "+")
+      .replace(/_/g, "/")
+      .padEnd(Math.ceil(match[1].length / 4) * 4, "=");
+    const decodedText = new TextDecoder().decode(
+      Uint8Array.from(atob(encoded), (char) => char.charCodeAt(0)),
+    );
+    const embeddedUrl = decodedText.match(/https?:\/\/[^\s\u0000"]+/)?.[0];
+
+    return embeddedUrl || rawUrl;
+  } catch {
+    return rawUrl;
   }
 }
 
